@@ -8,6 +8,7 @@ This repository contains a simple Flask website for the Fort Wayne Wrestling Clu
 - About Us page
 - Donations page
 - Schedule page with the ability to add events (requires login)
+- Modern responsive styling
 
 ## Requirements
 

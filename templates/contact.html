@@ -3,6 +3,7 @@
 {% block content %}
 <h1>Contact Us</h1>
 <form method="post">
+  {{ form.csrf_token }}
   <label>Email</label>
   <input type="email" name="email" required>
   <label>Message</label>

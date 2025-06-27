@@ -2,7 +2,7 @@
 {% block title %}Schedule - FW Wrestling Club{% endblock %}
 {% block content %}
 <h1>Schedule</h1>
-<ul>
+<ul class="event-list">
   {% for event in events %}
     <li>{{ event.date }} - {{ event.name }} - {{ event.description }}</li>
   {% else %}

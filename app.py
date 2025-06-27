@@ -9,18 +9,9 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'change-me'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 
-# Mail configuration (uses environment variables for credentials)
-app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER', 'localhost')
-app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT', 25))
-app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
-app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_DEFAULT_SENDER', 'noreply@example.com')
-
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
-mail = Mail(app)
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -77,6 +68,8 @@ def contact():
     return render_template('contact.html')
 
 @app.route('/schedule')
+@app.route('/schedule')
+@login_required
 def schedule():
     events = Event.query.order_by(Event.date).all()
     return render_template('schedule.html', events=events)
@@ -132,3 +125,4 @@ if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     debug = os.environ.get('DEBUG', 'False').lower() in ('1', 'true', 'yes')
     app.run(debug=debug, host='0.0.0.0', port=port)
+    app.run(debug=True, host='0.0.0.0', port=port)

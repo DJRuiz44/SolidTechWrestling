@@ -7,6 +7,8 @@ This repository contains a simple Flask website for the Fort Wayne Wrestling Clu
 - Account registration and login
 - About Us page
 - Donations page
+- Forms include CSRF protection via Flask-WTF
+- `SECRET_KEY` – secret key used for session and CSRF protection.
 - Schedule page with the ability to add events (requires login)
 - Modern responsive styling
 

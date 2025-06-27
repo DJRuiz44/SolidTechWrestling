@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Contact - FW Wrestling Club{% endblock %}
+{% block content %}
+<h1>Contact Us</h1>
+<form method="post">
+  <label>Email</label>
+  <input type="email" name="email" required>
+  <label>Message</label>
+  <textarea name="message" required></textarea>
+  <button type="submit">Send</button>
+</form>
+{% endblock %}

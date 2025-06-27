@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Schedule - FW Wrestling Club{% endblock %}
+{% block content %}
+<h1>Schedule</h1>
+<ul class="event-list">
+  {% for event in events %}
+    <li>{{ event.date }} - {{ event.name }} - {{ event.description }}</li>
+  {% else %}
+    <li>No events scheduled.</li>
+  {% endfor %}
+</ul>
+{% if current_user.is_authenticated %}
+<h2>Add Event</h2>
+<form method="post" action="{{ url_for('add_event') }}">
+  <label>Name</label>
+  <input type="text" name="name" required>
+  <label>Date</label>
+  <input type="date" name="date" required>
+  <label>Description</label>
+  <textarea name="description" required></textarea>
+  <button type="submit">Add</button>
+</form>
+{% endif %}
+{% endblock %}

@@ -37,16 +37,35 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 mail = Mail(app)
 
+user_colleges = db.Table(
+    'user_colleges',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('college_id', db.Integer, db.ForeignKey('college.id')),
+)
+
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
     password_hash = db.Column(db.String(150), nullable=False)
+    first_name = db.Column(db.String(150))
+    last_name = db.Column(db.String(150))
+    graduation_year = db.Column(db.Integer)
+    gpa = db.Column(db.Float)
     team = db.Column(db.String(150))
     school = db.Column(db.String(150))
     club = db.Column(db.String(150))
     height = db.Column(db.String(20))
     weight_class = db.Column(db.String(20))
     matches = db.relationship('Match', backref='user', lazy=True)
+    colleges = db.relationship('College', secondary=user_colleges, backref='users')
+
+
+class College(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150), nullable=False)
+    logo = db.Column(db.String(150))
+    recruitment_url = db.Column(db.String(300))
 
 class Match(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -73,6 +92,21 @@ def load_user(user_id):
 @app.before_first_request
 def create_tables():
     db.create_all()
+    if not College.query.first():
+        colleges = [
+            College(
+                name='State University',
+                logo='state_university.svg',
+                recruitment_url='https://example.com/state-form',
+            ),
+            College(
+                name='City College',
+                logo='city_college.svg',
+                recruitment_url='https://example.com/city-form',
+            ),
+        ]
+        db.session.add_all(colleges)
+        db.session.commit()
 
 @app.route('/')
 def index():
@@ -168,12 +202,20 @@ def logout():
 @login_required
 def profile():
     form = ProfileForm(obj=current_user)
+    form.colleges.choices = [(c.id, c.name) for c in College.query.all()]
+    if request.method == 'GET':
+        form.colleges.data = [c.id for c in current_user.colleges]
     if form.validate_on_submit():
+        current_user.first_name = form.first_name.data
+        current_user.last_name = form.last_name.data
+        current_user.graduation_year = form.graduation_year.data
+        current_user.gpa = form.gpa.data
         current_user.team = form.team.data
         current_user.school = form.school.data
         current_user.club = form.club.data
         current_user.height = form.height.data
         current_user.weight_class = form.weight_class.data
+        current_user.colleges = College.query.filter(College.id.in_(form.colleges.data)).all()
         db.session.commit()
         flash('Profile updated')
         return redirect(url_for('profile'))

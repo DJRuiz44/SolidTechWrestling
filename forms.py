@@ -1,5 +1,14 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField, SubmitField, DateField
+from wtforms import (
+    StringField,
+    PasswordField,
+    TextAreaField,
+    SubmitField,
+    DateField,
+    SelectMultipleField,
+    IntegerField,
+    FloatField,
+)
 from wtforms.validators import DataRequired, Email
 
 class LoginForm(FlaskForm):
@@ -24,11 +33,16 @@ class EventForm(FlaskForm):
     submit = SubmitField('Add')
 
 class ProfileForm(FlaskForm):
+    first_name = StringField('First Name')
+    last_name = StringField('Last Name')
+    graduation_year = IntegerField('Graduation Year')
+    gpa = FloatField('GPA')
     team = StringField('Team')
     school = StringField('School')
     club = StringField('Club')
     height = StringField('Height')
     weight_class = StringField('Weight Class')
+    colleges = SelectMultipleField('Interested Colleges', coerce=int)
     submit = SubmitField('Save')
 
 class MatchForm(FlaskForm):

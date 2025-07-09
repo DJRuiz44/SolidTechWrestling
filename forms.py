@@ -22,3 +22,17 @@ class EventForm(FlaskForm):
     date = DateField('Date', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
     submit = SubmitField('Add')
+
+class ProfileForm(FlaskForm):
+    team = StringField('Team')
+    school = StringField('School')
+    club = StringField('Club')
+    height = StringField('Height')
+    weight_class = StringField('Weight Class')
+    submit = SubmitField('Save')
+
+class MatchForm(FlaskForm):
+    opponent = StringField('Opponent', validators=[DataRequired()])
+    date = DateField('Date', validators=[DataRequired()])
+    description = TextAreaField('Description')
+    submit = SubmitField('Add')

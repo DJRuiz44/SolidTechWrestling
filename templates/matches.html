@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}My Matches - FW Wrestling Club{% endblock %}
+{% block content %}
+<h1>Upcoming Matches</h1>
+<ul class="event-list">
+  {% for match in matches %}
+    <li>{{ match.date }} - {{ match.opponent }} - {{ match.description }}</li>
+  {% else %}
+    <li>No matches scheduled.</li>
+  {% endfor %}
+</ul>
+<h2>Add Match</h2>
+<form method="post">
+  {{ form.csrf_token }}
+  <label>Opponent</label>
+  <input type="text" name="opponent" required>
+  <label>Date</label>
+  <input type="date" name="date" required>
+  <label>Description</label>
+  <textarea name="description"></textarea>
+  <button type="submit">Add</button>
+</form>
+{% endblock %}

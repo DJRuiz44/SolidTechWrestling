@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Profile - FW Wrestling Club{% endblock %}
+{% block content %}
+<h1>Your Profile</h1>
+<form method="post">
+  {{ form.csrf_token }}
+  <label>Team</label>
+  <input type="text" name="team" value="{{ form.team.data or '' }}">
+  <label>School</label>
+  <input type="text" name="school" value="{{ form.school.data or '' }}">
+  <label>Club</label>
+  <input type="text" name="club" value="{{ form.club.data or '' }}">
+  <label>Height</label>
+  <input type="text" name="height" value="{{ form.height.data or '' }}">
+  <label>Weight Class</label>
+  <input type="text" name="weight_class" value="{{ form.weight_class.data or '' }}">
+  <button type="submit">Save</button>
+</form>
+{% endblock %}
